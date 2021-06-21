@@ -11,7 +11,6 @@ function ImageInputList({ imageUris = [], onRemoveImage, onAddImage }) {
         <View>
             <ScrollView ref={scrollView}
                 horizontal onContentSizeChange={() => scrollView.current.scrollToEnd()}
-                style={{ backgroundColor: 'yellow' }}
             >
                 <View style={styles.container}>
                     {imageUris.map(uri => (
