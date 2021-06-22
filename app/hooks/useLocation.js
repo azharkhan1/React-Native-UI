@@ -3,7 +3,7 @@ import * as Location from 'expo-location';
 
 
 
-export default useLocation = () => {
+const useLocation = () => {
 
     const [location, setLocation] = React.useState();
 
@@ -28,4 +28,4 @@ export default useLocation = () => {
     return location;
 }
 
-
+export default useLocation;
