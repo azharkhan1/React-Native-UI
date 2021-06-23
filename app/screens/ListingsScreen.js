@@ -18,12 +18,11 @@ function ListingsScreen({ navigation }) {
   }, [])
 
 
-
   return (
     <Screen style={styles.screen}>
-      {error && <> <AppText>Couldn't retrieve the listings</AppText>
+      {error && <>
+        <AppText>Couldn't retrieve the listings</AppText>
         <AppButton title='Retry' onPress={loadListing} />
-
       </>
       }
       <ActivityIndicator visible={loading} />
