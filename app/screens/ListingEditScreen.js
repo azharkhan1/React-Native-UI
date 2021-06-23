@@ -10,7 +10,12 @@ import {
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import Screen from "../components/Screen";
 import FormImagePicker from "../components/forms/FormImagePicker";
+import listingApi from '../api/listing';
 import useLocation from "../hooks/useLocation";
+import { useState } from "react/cjs/react.production.min";
+import UploadScreen from "./UploadScreen";
+
+
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   price: Yup.number().required().min(1).max(10000).label("Price"),
@@ -77,11 +82,30 @@ const categories = [
 ];
 
 function ListingEditScreen() {
-
   const location = useLocation()
+  const [uploadVisible, setUploadVisible] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+
+  const handleSubmit = async (listing, { resetForm }) => {
+    setProgress(0);
+    setUploadVisible(true);
+    const result = await listingApi.addListing(
+      { ...listing, location },
+      progress => setProgress(progress)
+    );
+
+    if (!result.ok) {
+      setUploadVisible(false);
+      alert('Could not save listing');
+    }
+    alert('Success');
+
+    resetForm();
+  }
 
   return (
     <Screen style={styles.container}>
+      <UploadScreen progress={progress} visible={uploadVisible} onDone={() => setUploadVisible(false)} />
       <Form
         initialValues={{
           title: "",
@@ -90,7 +114,7 @@ function ListingEditScreen() {
           category: null,
           images: []
         }}
-        onSubmit={(values) => console.log(location)}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormImagePicker name={'images'} />
