@@ -13,6 +13,8 @@ import AuthContext from './app/auth/context';
 import authStorage from './app/auth/storage';
 import AppLoading from 'expo-app-loading';
 import { navigationRef } from './app/navigation/rootNavigation';
+import * as Notifications from 'expo-notifications';
+
 
 function App(props) {
   const [user, setUser] = React.useState();
@@ -26,9 +28,18 @@ function App(props) {
   if (!isReady)
     return <AppLoading startAsync={restoreUser} onFinish={() => setIsReady(true)} onError={() => setIsReady(false)} />
 
-
+  const showNotification = () => {
+    Notifications.presentNotificationAsync({
+      title: 'order success',
+      body: 'Order done',
+      data: {
+        _displayInForeground: true,
+      }
+    })
+  }
 
   return (
+    // <Button title='tapme' onPress={showNotification} />
     <AuthContext.Provider value={{ user, setUser }}>
       <OfflineNotice />
       <NavigationContainer ref={navigationRef} theme={navigationTheme}>
